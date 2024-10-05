@@ -1,18 +1,23 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.25;
-import ./user_auth.sol;
+pragma solidity ^0.8.27;
 
-event point_Awarded(uint userID, uint points_Awarded);
-event point_Deducted(uint userID, uint points_Deducted);
+import "./user_auth.sol";
 
 contract reward_points {
-  function awardPoints(uint userID, uint pointsAwarded) {
-     points += pointsAwarded;
-     emit point_Awarded(userID, points_Awarded);
+  
+  event point_Awarded(uint userID, uint points_Awarded);
+  event point_Deducted(uint userID, uint points_Deducted);
+  
+  mapping(uint => uint) public userPoints;
+
+  function awardPoints(uint userID, uint pointsAwarded) public {
+     userPoints[userID] += pointsAwarded;
+     emit point_Awarded(userID, pointsAwarded);
   } 
 
-  function deductPoints(uint userID, uint pointsDeducted) {
-    points -= points_Deducted;
+  function deductPoints(uint userID, uint pointsDeducted) public {
+    require(userPoints[userID] >= pointsDeducted, "Insufficient points");
+    userPoints[userID] -= pointsDeducted;
     emit point_Deducted(userID, pointsDeducted);
   }
-}
+} 
