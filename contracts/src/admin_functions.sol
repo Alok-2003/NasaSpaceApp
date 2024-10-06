@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.25;
+pragma solidity ^0.8.27;
 
 event adminAdded(string admin1, uint adminID);
 
-mapping(address => uint) public admins;
-
 contract adminFunctions {
-  function addAdmin(address admin, uint admin_ID) {
+  mapping(address => uint) admins;
+  function addAdmin(address admin, uint admin_ID) public {
     admins[admin] = admin_ID;
-    emit adminAdded(admin, admin_ID);
+    emit adminAdded("Admin Added", admin_ID);
   }
 
-  function removeAdmin(admin) {
-     delete admin[admin];
+  function removeAdmin(address admin) public {
+     delete admins[admin];
   }
 }
+ 
